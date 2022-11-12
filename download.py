@@ -21,6 +21,7 @@ def print_html(listfile):
     async def async_get(url):
         
         # block for a moment to check timeout behaviour
+        
         # value = 2.3 + random()
         # print(f'blocking for {value}')
         # await asyncio.sleep(value)
@@ -28,7 +29,7 @@ def print_html(listfile):
         response = requests.get(url)
 
         if response.status_code == 200:
-            return response.text
+            return response.text[:30]
         else :
             return "(unsuccessful status_code)" 
 
@@ -41,9 +42,9 @@ def print_html(listfile):
                     try:
                         html = await asyncio.wait_for(async_get(url), timeout=3)
                     except asyncio.TimeoutError:
-                        print('Skipping')
+                        print(f'Skipping {url}')
                     else :
-                        print('{} \"{}\"\n'.format(html,name))
+                        print(f'HTML \"{name}\"\n{html}\n')
 
     asyncio.run(scan_url_list(listfile))
 
