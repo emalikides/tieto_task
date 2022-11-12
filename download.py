@@ -32,7 +32,6 @@ def print_html(listfile):
         else :
             return "(unsuccessful status_code)" 
 
-    # main coroutine
     async def scan_url_list(listfile):
         with open(listfile, newline='') as csvfile:
             url_list = csv.reader(csvfile, delimiter=';')
@@ -40,14 +39,13 @@ def print_html(listfile):
                 if row:
                     (name,url) = row
                     try:
-                        done = await asyncio.wait_for(async_get(url), timeout=3)
+                        html = await asyncio.wait_for(async_get(url), timeout=3)
                     except asyncio.TimeoutError:
                         print('Skipping')
                     else :
-                        print('{} \"{}\"\n'.format(done,name))
+                        print('{} \"{}\"\n'.format(html,name))
 
     asyncio.run(scan_url_list(listfile))
-
 
 if __name__=="__main__":
     
